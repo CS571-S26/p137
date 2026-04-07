@@ -1,0 +1,490 @@
+/* ===== Dark Theme Foundation ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #000;
+  color: #e0e0e0;
+}
+
+/* ===== Bootstrap Overrides for Dark Theme ===== */
+.card {
+  background-color: #111;
+  border-color: #222;
+  color: #e0e0e0;
+}
+
+.card-title {
+  color: #fff;
+}
+
+.card-text {
+  color: #999;
+}
+
+.form-control,
+.form-select {
+  background-color: #1a1a1a;
+  border-color: #333;
+  color: #e0e0e0;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #222;
+  border-color: #555;
+  color: #fff;
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1);
+}
+
+.form-control::placeholder {
+  color: #666;
+}
+
+.form-label {
+  color: #ccc;
+}
+
+.form-text {
+  color: #777 !important;
+}
+
+.form-check-input {
+  background-color: #1a1a1a;
+  border-color: #444;
+}
+
+.form-check-input:checked {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.input-group-text {
+  background-color: #1a1a1a;
+  border-color: #333;
+  color: #999;
+}
+
+.table {
+  color: #e0e0e0;
+  --bs-table-bg: #111;
+  --bs-table-border-color: #222;
+}
+
+.table-light {
+  --bs-table-bg: #1a1a1a;
+  --bs-table-color: #e0e0e0;
+  --bs-table-border-color: #333;
+}
+
+.table-bordered > :not(caption) > * > * {
+  border-color: #222;
+}
+
+.table-hover > tbody > tr:hover > * {
+  --bs-table-accent-bg: #1e1e1e;
+  color: #fff;
+}
+
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb-item a {
+  color: #888;
+}
+
+.breadcrumb-item a:hover {
+  color: #fff;
+}
+
+.breadcrumb-item.active {
+  color: #666;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: #444;
+}
+
+.alert-info {
+  background-color: #0c2d48;
+  border-color: #1a4a6e;
+  color: #7ec8e3;
+}
+
+.alert-success {
+  background-color: #0d2b1a;
+  border-color: #1a5c34;
+  color: #7bc89c;
+}
+
+.alert-light {
+  background-color: #111;
+  border-color: #222;
+  color: #ccc;
+}
+
+.nav-tabs {
+  border-bottom-color: #222;
+}
+
+.nav-tabs .nav-link {
+  color: #888;
+  border-color: transparent;
+}
+
+.nav-tabs .nav-link:hover {
+  color: #fff;
+  border-color: #333 #333 #222;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: transparent;
+  border-color: #333 #333 #000;
+  color: #fff;
+  font-weight: 600;
+  border-bottom: 2px solid #fff;
+}
+
+.progress {
+  background-color: #222;
+}
+
+hr {
+  border-color: #222;
+}
+
+.text-muted {
+  color: #777 !important;
+}
+
+.btn-outline-primary {
+  color: #6ea8fe;
+  border-color: #6ea8fe;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-outline-secondary {
+  color: #888;
+  border-color: #444;
+}
+
+.btn-outline-secondary:hover {
+  color: #fff;
+  background-color: #333;
+  border-color: #555;
+}
+
+.btn-outline-danger {
+  color: #ea868f;
+  border-color: #ea868f;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+}
+
+.btn-light {
+  background-color: #fff;
+  color: #000;
+}
+
+.btn-outline-light {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  background-color: #000 !important;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.navbar .nav-link.active {
+  font-weight: 600;
+  border-bottom: 2px solid #fff;
+}
+
+/* ===== Hero Section ===== */
+.hero-section {
+  background: #000;
+  padding: 5rem 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+/* ===== Stat Cards ===== */
+.stat-card {
+  background-color: #111 !important;
+}
+
+.stat-card .stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.step-icon {
+  font-size: 2.5rem;
+}
+
+/* ===== Card Image Wrapper ===== */
+.card-img-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-img-wrapper img {
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card-img-wrapper:hover img {
+  transform: scale(1.05);
+}
+
+.location-type-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.favorite-overlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* ===== Location & Room Cards ===== */
+.location-card,
+.room-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #1a1a1a;
+  background-color: #111;
+}
+
+.location-card:hover,
+.room-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.04) !important;
+  border-color: #333;
+}
+
+/* ===== Location Hero ===== */
+.location-hero {
+  position: relative;
+}
+
+.location-hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+}
+
+/* ===== Star Rating ===== */
+.star-filled {
+  color: #ffc107;
+}
+
+.star-empty {
+  color: #444;
+}
+
+.star-interactive {
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.star-interactive:hover {
+  transform: scale(1.2);
+}
+
+/* ===== Favorite Button ===== */
+.favorite-btn {
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  padding: 0;
+}
+
+/* ===== Equipment Selection Card ===== */
+.equipment-select-card {
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: #1a1a1a;
+  border-color: #333;
+  color: #e0e0e0;
+}
+
+.equipment-select-card:hover {
+  border-color: #6ea8fe;
+}
+
+/* ===== Search Filter Panel ===== */
+.search-filter-panel {
+  background-color: #111 !important;
+  border: 1px solid #1a1a1a;
+}
+
+/* ===== Dark Badges (non-semantic) ===== */
+.badge-dark-subtle {
+  background-color: #1a1a1a;
+  color: #ccc;
+  border: 1px solid #333;
+}
+
+/* ===== Equipment Badge ===== */
+.equipment-badge {
+  font-weight: normal;
+  font-size: 0.8rem;
+  padding: 0.35em 0.6em;
+}
+
+.equipment-badge.selectable:hover {
+  opacity: 0.85;
+}
+
+/* ===== Comparison Table ===== */
+.comparison-table th {
+  min-width: 180px;
+}
+
+.comparison-table {
+  background-color: #111;
+}
+
+/* ===== Reservation Card ===== */
+.reservation-card {
+  transition: box-shadow 0.2s;
+}
+
+.reservation-card:hover {
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.04) !important;
+}
+
+/* ===== Dark Info Box ===== */
+.dark-info-box {
+  background-color: #1a1a1a;
+  border: 1px solid #222;
+  border-radius: 0.375rem;
+  padding: 1rem;
+}
+
+/* ===== Dark Confirm Card ===== */
+.dark-confirm-card {
+  background-color: #1a1a1a !important;
+  border: 1px solid #222;
+}
+
+/* ===== Review Section ===== */
+.review-card-dark {
+  border-bottom: 1px solid #1a1a1a !important;
+}
+
+.review-form-dark {
+  background-color: #1a1a1a !important;
+  border-color: #222 !important;
+}
+
+/* ===== "How It Works" Section ===== */
+.how-it-works-section {
+  background-color: #0a0a0a;
+  border-top: 1px solid #1a1a1a;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+/* ===== Footer ===== */
+.site-footer {
+  background-color: #000 !important;
+  border-top: 1px solid #1a1a1a;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 2.5rem 0;
+  }
+
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+
+  .stat-card .stat-number {
+    font-size: 1.8rem;
+  }
+
+  .card-img-wrapper img {
+    height: 160px;
+  }
+}
+
+/* ===== Time Range Slider ===== */
+.slider-rail {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 6px;
+  transform: translateY(-50%);
+  background: #222;
+  border-radius: 3px;
+}
+
+.slider-fill {
+  position: absolute;
+  top: 50%;
+  height: 6px;
+  transform: translateY(-50%);
+  background: #0d6efd;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.slider-thumb {
+  position: absolute;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #0d6efd;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  z-index: 2;
+  transition: box-shadow 0.15s;
+}
+
+.slider-thumb:hover,
+.slider-thumb.active {
+  box-shadow: 0 0 0 6px rgba(13, 110, 253, 0.25);
+  cursor: grabbing;
+}
+
+.slider-tick-label {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  color: #555;
+  top: 2px;
+}

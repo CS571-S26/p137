@@ -1,17 +1,39 @@
-import { Link, Outlet } from 'react-router-dom'
-import '../App.css'
+import { NavLink, Outlet } from 'react-router-dom';
+import { Navbar, Container, Nav } from 'react-bootstrap';
 
 export default function Layout() {
   return (
-    <div>
-      <nav className="m-3">
-        <Link to="/" className="me-3">Home</Link>
-        <Link to="/about/">About</Link>
-      </nav>
+    <div className="d-flex flex-column min-vh-100">
+      <Navbar expand="md" sticky="top" data-bs-theme="dark">
+        <Container>
+          <Navbar.Brand as={NavLink} to="/" className="fw-bold">
+            <i className="bi bi-building me-2 text-danger" />CampusReserve
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="main-nav" />
+          <Navbar.Collapse id="main-nav">
+            <Nav className="me-auto">
+              <Nav.Link as={NavLink} to="/" end>Home</Nav.Link>
+              <Nav.Link as={NavLink} to="/browse">Browse</Nav.Link>
+              <Nav.Link as={NavLink} to="/dashboard">My Dashboard</Nav.Link>
+            </Nav>
+            <Nav>
+              <Nav.Link as={NavLink} to="/browse" className="text-light">
+                <i className="bi bi-search me-1" />Search
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
 
-      <main>
+      <main className="flex-grow-1">
         <Outlet />
       </main>
+
+      <footer className="site-footer text-white-50 text-center py-3 mt-auto">
+        <Container>
+          <small>CampusReserve &mdash; UW-Madison Campus Resource Booking</small>
+        </Container>
+      </footer>
     </div>
-  )
+  );
 }
