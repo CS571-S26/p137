@@ -9,7 +9,7 @@ export default function RoomComparison({ rooms, equipmentMap, locationMap, onRem
 
   return (
     <div className="table-responsive">
-      <Table bordered hover className="comparison-table align-middle">
+      <Table bordered className="comparison-table align-middle">
         <thead>
           <tr>
             <th style={{ width: '160px' }}>Feature</th>

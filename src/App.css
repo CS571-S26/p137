@@ -69,7 +69,15 @@ body {
 .table {
   color: #e0e0e0;
   --bs-table-bg: #111;
+  --bs-table-color: #e0e0e0;
   --bs-table-border-color: #222;
+  --bs-table-hover-color: #fff;
+  --bs-table-hover-bg: #1a1a1a;
+}
+
+.table th,
+.table td {
+  color: #e0e0e0;
 }
 
 .table-light {
