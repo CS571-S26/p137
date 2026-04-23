@@ -10,7 +10,7 @@ function formatDuration(minutes) {
   return `${m}m`;
 }
 
-export default function ReservationCard({ reservation, onCancel }) {
+export default function ReservationCard({ reservation, onCancel, onReschedule }) {
   const statusColors = {
     upcoming: 'primary',
     completed: 'success',
@@ -51,6 +51,15 @@ export default function ReservationCard({ reservation, onCancel }) {
             <Link to={`/room/${reservation.roomId}`} className="btn btn-outline-primary btn-sm">
               View Room
             </Link>
+            {reservation.status === 'upcoming' && onReschedule && (
+              <Button
+                variant="outline-warning"
+                size="sm"
+                onClick={() => onReschedule(reservation)}
+              >
+                <i className="bi bi-calendar-event me-1" />Reschedule
+              </Button>
+            )}
             {reservation.status === 'upcoming' && (
               <Button variant="outline-danger" size="sm" onClick={() => onCancel(reservation.id)}>
                 Cancel

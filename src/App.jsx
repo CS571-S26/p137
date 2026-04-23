@@ -8,6 +8,7 @@ import RoomPage from './pages/RoomPage';
 import BookingPage from './pages/BookingPage';
 import DashboardPage from './pages/DashboardPage';
 import ComparePage from './pages/ComparePage';
+import ProfilePage from './pages/ProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="book/:id" element={<BookingPage />} />
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="compare" element={<ComparePage />} />
+        <Route path="profile" element={<ProfilePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

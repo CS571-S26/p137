@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Card, Form, Button, Alert } from 'react-bootstrap';
+import { Button, Alert, Badge } from 'react-bootstrap';
 import StarRating from './StarRating';
+import ReviewForm from './ReviewForm';
 
 function ReviewCard({ review }) {
   return (
@@ -8,6 +9,9 @@ function ReviewCard({ review }) {
       <div className="d-flex justify-content-between align-items-center mb-1">
         <div>
           <strong className="me-2 text-white">{review.author}</strong>
+          {review.userGenerated && (
+            <Badge bg="primary" pill className="me-2" style={{ fontSize: '0.65rem' }}>You</Badge>
+          )}
           <StarRating rating={review.rating} />
         </div>
         <small className="text-muted">{review.date}</small>
@@ -19,25 +23,10 @@ function ReviewCard({ review }) {
 
 export default function ReviewSection({ reviews, roomId, onAddReview }) {
   const [showForm, setShowForm] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [text, setText] = useState('');
-  const [author, setAuthor] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (rating === 0 || !text.trim() || !author.trim()) return;
-    onAddReview({
-      id: `r-new-${Date.now()}`,
-      roomId,
-      author: author.trim(),
-      rating,
-      date: new Date().toISOString().split('T')[0],
-      text: text.trim(),
-    });
-    setRating(0);
-    setText('');
-    setAuthor('');
+  const handleSubmit = (review) => {
+    onAddReview(review);
     setShowForm(false);
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
@@ -56,47 +45,14 @@ export default function ReviewSection({ reviews, roomId, onAddReview }) {
         </Button>
       </div>
 
-      {submitted && <Alert variant="success" className="py-2">Review added.</Alert>}
+      {submitted && <Alert variant="success" className="py-2">Thanks! Your review was posted.</Alert>}
 
       {showForm && (
-        <Card className="mb-3 review-form-dark">
-          <Card.Body>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-2">
-                <Form.Label className="small">Your Name</Form.Label>
-                <Form.Control
-                  size="sm"
-                  value={author}
-                  onChange={(e) => setAuthor(e.target.value)}
-                  placeholder="e.g., Alex M."
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-2">
-                <Form.Label className="small">Rating</Form.Label>
-                <div>
-                  <StarRating rating={rating} size="lg" interactive onRate={setRating} />
-                  {rating === 0 && <small className="text-muted ms-2">Click to rate</small>}
-                </div>
-              </Form.Group>
-              <Form.Group className="mb-2">
-                <Form.Label className="small">Your Review</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={2}
-                  size="sm"
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  placeholder="Share a tip or your experience..."
-                  required
-                />
-              </Form.Group>
-              <Button type="submit" size="sm" variant="primary" disabled={rating === 0}>
-                Submit Review
-              </Button>
-            </Form>
-          </Card.Body>
-        </Card>
+        <ReviewForm
+          roomId={roomId}
+          onSubmit={handleSubmit}
+          onCancel={() => setShowForm(false)}
+        />
       )}
 
       {reviews.length === 0 ? (

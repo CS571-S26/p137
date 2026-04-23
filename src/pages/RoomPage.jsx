@@ -1,20 +1,36 @@
 import { useParams, Link } from 'react-router-dom';
-import { Container, Row, Col, Badge, Breadcrumb, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Badge, Breadcrumb, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import { getRoomById, getLocationById, getEquipmentForRoom, getReviewsForRoom } from '../data/campusData';
 import StarRating from '../components/StarRating';
 import FavoriteButton from '../components/FavoriteButton';
 import EquipmentBadge from '../components/EquipmentBadge';
 import ReviewSection from '../components/ReviewSection';
+import AvailabilityHeatmap from '../components/AvailabilityHeatmap';
+
+const USER_REVIEWS_KEY = 'campusreserve-user-reviews';
+
+function loadUserReviews() {
+  try { return JSON.parse(localStorage.getItem(USER_REVIEWS_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveUserReviews(reviews) {
+  localStorage.setItem(USER_REVIEWS_KEY, JSON.stringify(reviews));
+}
 
 export default function RoomPage() {
   const { id } = useParams();
   const room = getRoomById(id);
   const location = room ? getLocationById(room.locationId) : null;
   const equipment = room ? getEquipmentForRoom(room.id) : [];
-  const initialReviews = room ? getReviewsForRoom(room.id) : [];
 
-  const [reviews, setReviews] = useState(initialReviews);
+  const [userReviews, setUserReviews] = useState(() =>
+    loadUserReviews().filter(r => r.roomId === id)
+  );
+  const seedReviews = room ? getReviewsForRoom(room.id) : [];
+  const reviews = [...userReviews, ...seedReviews];
+
   const [favorites, setFavorites] = useState(() => {
     try { return JSON.parse(localStorage.getItem('campusreserve-favorites')) || []; }
     catch { return []; }
@@ -29,7 +45,9 @@ export default function RoomPage() {
   };
 
   const handleAddReview = (review) => {
-    setReviews(prev => [review, ...prev]);
+    setUserReviews(prev => [review, ...prev]);
+    const all = loadUserReviews();
+    saveUserReviews([review, ...all]);
   };
 
   if (!room || !location) {
@@ -115,13 +133,16 @@ export default function RoomPage() {
 
       <Row className="mb-4">
         <Col>
-          <h5 className="text-white">Availability</h5>
-          <p className="text-muted mb-2">
-            Open slots available today. Book up to 4 hours at a time, in 15-minute increments.
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <h5 className="text-white mb-0">Availability</h5>
+            <Link to={`/book/${room.id}`} className="btn btn-primary btn-sm">
+              Reserve a Time Slot
+            </Link>
+          </div>
+          <p className="text-muted small mb-2">
+            Hover any cell for details. Pick a green hour to avoid conflicts during booking.
           </p>
-          <Link to={`/book/${room.id}`}>
-            <Button variant="primary">Reserve a Time Slot</Button>
-          </Link>
+          <AvailabilityHeatmap roomId={room.id} />
         </Col>
       </Row>
 

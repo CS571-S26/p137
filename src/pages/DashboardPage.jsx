@@ -1,9 +1,10 @@
 import { useState, useMemo } from 'react';
-import { Container, Row, Col, Card, Tabs, Tab, Alert, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Tabs, Tab, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { getAllRooms, getEquipmentForRoom, getLocations } from '../data/campusData';
 import ReservationCard from '../components/ReservationCard';
 import RoomCard from '../components/RoomCard';
+import RescheduleModal from '../components/RescheduleModal';
 
 export default function DashboardPage() {
   const [reservations, setReservations] = useState(() => {
@@ -15,6 +16,8 @@ export default function DashboardPage() {
     try { return JSON.parse(localStorage.getItem('campusreserve-favorites')) || []; }
     catch { return []; }
   });
+
+  const [rescheduling, setRescheduling] = useState(null);
 
   const allRooms = getAllRooms();
   const locations = getLocations();
@@ -34,6 +37,14 @@ export default function DashboardPage() {
   const cancelReservation = (resId) => {
     setReservations(prev => {
       const next = prev.map(r => r.id === resId ? { ...r, status: 'cancelled' } : r);
+      localStorage.setItem('campusreserve-reservations', JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const applyReschedule = (updated) => {
+    setReservations(prev => {
+      const next = prev.map(r => r.id === updated.id ? { ...r, ...updated } : r);
       localStorage.setItem('campusreserve-reservations', JSON.stringify(next));
       return next;
     });
@@ -82,7 +93,12 @@ export default function DashboardPage() {
             </Alert>
           ) : (
             upcoming.map(res => (
-              <ReservationCard key={res.id} reservation={res} onCancel={cancelReservation} />
+              <ReservationCard
+                key={res.id}
+                reservation={res}
+                onCancel={cancelReservation}
+                onReschedule={setRescheduling}
+              />
             ))
           )}
         </Tab>
@@ -127,6 +143,13 @@ export default function DashboardPage() {
           )}
         </Tab>
       </Tabs>
+
+      <RescheduleModal
+        show={!!rescheduling}
+        reservation={rescheduling}
+        onClose={() => setRescheduling(null)}
+        onConfirm={applyReschedule}
+      />
     </Container>
   );
 }

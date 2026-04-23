@@ -1,22 +1,39 @@
-import { useState } from 'react';
-import { Form, Button, Row, Col, ProgressBar } from 'react-bootstrap';
-import TimeRangeSlider, { minutesToLabel } from './TimeRangeSlider';
+import { useEffect, useMemo, useState } from 'react';
+import { Form, Button, Row, Col, ProgressBar, Alert } from 'react-bootstrap';
+import { minutesToLabel } from './TimeRangeSlider';
+import WeekBookingGrid from './WeekBookingGrid';
+import { useUser } from '../contexts/UserContext';
+import { findConflict } from '../data/bookings';
 
 const STEPS = ['Date & Time', 'Your Info', 'Confirm'];
 
 export default function BookingForm({ room, onSubmit }) {
+  const { profile } = useUser();
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     date: '',
-    startTime: 540,
-    endTime: 600,
-    name: '',
-    email: '',
+    startTime: null,
+    endTime: null,
+    name: profile.name || '',
+    email: profile.email || '',
     purpose: '',
     groupSize: '1',
     notes: '',
   });
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    setFormData(prev => ({
+      ...prev,
+      name: prev.name || profile.name || '',
+      email: prev.email || profile.email || '',
+    }));
+  }, [profile.name, profile.email]);
+
+  const conflict = useMemo(() => {
+    if (!formData.date || formData.startTime == null || formData.endTime == null) return null;
+    return findConflict(room.id, formData.date, formData.startTime, formData.endTime);
+  }, [room.id, formData.date, formData.startTime, formData.endTime]);
 
   const update = (key, value) => {
     setFormData(prev => ({ ...prev, [key]: value }));
@@ -26,10 +43,13 @@ export default function BookingForm({ room, onSubmit }) {
   const validateStep = () => {
     const newErrors = {};
     if (step === 0) {
-      if (!formData.date) newErrors.date = 'Please select a date';
-      const today = new Date().toISOString().split('T')[0];
-      if (formData.date && formData.date < today) newErrors.date = 'Date cannot be in the past';
-      if (formData.endTime <= formData.startTime) newErrors.time = 'Invalid time range';
+      if (!formData.date || formData.startTime == null || formData.endTime == null) {
+        newErrors.time = 'Please click and drag on the grid to pick a date and time';
+      } else if (formData.endTime <= formData.startTime) {
+        newErrors.time = 'Invalid time range';
+      } else if (conflict) {
+        newErrors.time = 'This time overlaps an existing reservation. Pick a different slot.';
+      }
     }
     if (step === 1) {
       if (!formData.name.trim()) newErrors.name = 'Name is required';
@@ -49,11 +69,17 @@ export default function BookingForm({ room, onSubmit }) {
   const handleBack = () => setStep(s => s - 1);
 
   const handleSubmit = () => {
+    if (conflict) {
+      setStep(0);
+      setErrors({ time: 'This time overlaps an existing reservation. Pick a different slot.' });
+      return;
+    }
     onSubmit(formData);
   };
 
   const progress = ((step + 1) / STEPS.length) * 100;
-  const durationMin = formData.endTime - formData.startTime;
+  const hasTime = formData.startTime != null && formData.endTime != null;
+  const durationMin = hasTime ? formData.endTime - formData.startTime : 0;
   const durationH = Math.floor(durationMin / 60);
   const durationM = durationMin % 60;
   const durationStr = durationH > 0 && durationM > 0
@@ -76,31 +102,24 @@ export default function BookingForm({ room, onSubmit }) {
       {step === 0 && (
         <div>
           <h5 className="mb-3 text-white">Select Date & Time</h5>
-          <Row className="g-3">
-            <Col xs={12}>
-              <Form.Group>
-                <Form.Label>Date</Form.Label>
-                <Form.Control
-                  type="date"
-                  value={formData.date}
-                  onChange={(e) => update('date', e.target.value)}
-                  isInvalid={!!errors.date}
-                />
-                <Form.Control.Feedback type="invalid">{errors.date}</Form.Control.Feedback>
-              </Form.Group>
-            </Col>
-            <Col xs={12}>
-              <Form.Group>
-                <Form.Label>Time Range</Form.Label>
-                {errors.time && <div className="text-danger small mb-1">{errors.time}</div>}
-                <TimeRangeSlider
-                  startTime={formData.startTime}
-                  endTime={formData.endTime}
-                  onChange={(s, e) => setFormData(prev => ({ ...prev, startTime: s, endTime: e }))}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+          <p className="text-muted small mb-3">
+            Drag across green cells to pick your booking window. Red is already booked; gray is past.
+          </p>
+          {errors.time && (
+            <Alert variant="danger" className="py-2">
+              <i className="bi bi-exclamation-triangle me-2" />
+              {errors.time}
+            </Alert>
+          )}
+          <WeekBookingGrid
+            roomId={room.id}
+            selectedDate={formData.date}
+            startTime={formData.startTime}
+            endTime={formData.endTime}
+            onChange={(date, start, end) =>
+              setFormData(prev => ({ ...prev, date, startTime: start, endTime: end }))
+            }
+          />
         </div>
       )}
 
@@ -180,12 +199,17 @@ export default function BookingForm({ room, onSubmit }) {
       {step === 2 && (
         <div>
           <h5 className="mb-3 text-white">Confirm Your Reservation</h5>
+          {conflict && (
+            <Alert variant="danger" className="py-2">
+              A new conflicting booking was detected. Please go back and choose a different time.
+            </Alert>
+          )}
           <div className="dark-confirm-card rounded p-3">
             <Row>
               <Col md={6}>
                 <p className="mb-1"><strong className="text-white">Room:</strong> {room.name}</p>
                 <p className="mb-1"><strong className="text-white">Date:</strong> {formData.date}</p>
-                <p className="mb-1"><strong className="text-white">Time:</strong> {minutesToLabel(formData.startTime)} &ndash; {minutesToLabel(formData.endTime)}</p>
+                <p className="mb-1"><strong className="text-white">Time:</strong> {hasTime ? `${minutesToLabel(formData.startTime)} \u2013 ${minutesToLabel(formData.endTime)}` : '\u2014'}</p>
                 <p className="mb-1"><strong className="text-white">Duration:</strong> {durationStr}</p>
               </Col>
               <Col md={6}>
@@ -205,9 +229,17 @@ export default function BookingForm({ room, onSubmit }) {
           <Button variant="outline-secondary" onClick={handleBack}>Back</Button>
         ) : <div />}
         {step < STEPS.length - 1 ? (
-          <Button variant="primary" onClick={handleNext}>Continue</Button>
+          <Button
+            variant="primary"
+            onClick={handleNext}
+            disabled={step === 0 && !!conflict}
+          >
+            Continue
+          </Button>
         ) : (
-          <Button variant="success" onClick={handleSubmit}>Confirm Reservation</Button>
+          <Button variant="success" onClick={handleSubmit} disabled={!!conflict}>
+            Confirm Reservation
+          </Button>
         )}
       </div>
     </div>
