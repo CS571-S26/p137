@@ -55,7 +55,7 @@ export default function ProfilePage() {
 
   const handleSignOut = () => {
     clearProfile();
-    setDraft({ name: '', email: '', major: '', year: '', studentId: '' });
+    setDraft({ name: '', email: '', major: '', year: '' });
     setSaved(false);
   };
 
@@ -179,7 +179,7 @@ export default function ProfilePage() {
                       />
                     </Form.Group>
                   </Col>
-                  <Col md={3}>
+                  <Col md={6}>
                     <Form.Group>
                       <Form.Label>Year</Form.Label>
                       <Form.Select
@@ -189,16 +189,6 @@ export default function ProfilePage() {
                         <option value="">Select...</option>
                         {YEARS.map(y => <option key={y} value={y}>{y}</option>)}
                       </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col md={3}>
-                    <Form.Group>
-                      <Form.Label>Student ID</Form.Label>
-                      <Form.Control
-                        value={draft.studentId}
-                        onChange={(e) => set('studentId', e.target.value)}
-                        placeholder="90XXXXXXXX"
-                      />
                     </Form.Group>
                   </Col>
                 </Row>

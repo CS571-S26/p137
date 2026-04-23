@@ -7,7 +7,6 @@ const DEFAULT_PROFILE = {
   email: '',
   major: '',
   year: '',
-  studentId: '',
 };
 
 const UserContext = createContext(null);
