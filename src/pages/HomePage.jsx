@@ -88,7 +88,7 @@ export default function HomePage() {
               <Card className="h-100 text-center p-3">
                 <Card.Body>
                   <div className="step-icon mb-3"><i className="bi bi-search" /></div>
-                  <h5 className="text-white">1. Browse & Search</h5>
+                  <h3 className="text-white h5">1. Browse & Search</h3>
                   <p className="text-muted small">Explore campus locations, filter by building type, room capacity, and available equipment.</p>
                 </Card.Body>
               </Card>
@@ -97,7 +97,7 @@ export default function HomePage() {
               <Card className="h-100 text-center p-3">
                 <Card.Body>
                   <div className="step-icon mb-3"><i className="bi bi-calendar-check" /></div>
-                  <h5 className="text-white">2. Select & Reserve</h5>
+                  <h3 className="text-white h5">2. Select & Reserve</h3>
                   <p className="text-muted small">Pick your date, time slot, and any equipment you need. Complete the booking in seconds.</p>
                 </Card.Body>
               </Card>
@@ -106,7 +106,7 @@ export default function HomePage() {
               <Card className="h-100 text-center p-3">
                 <Card.Body>
                   <div className="step-icon mb-3"><i className="bi bi-check-circle" /></div>
-                  <h5 className="text-white">3. Show Up & Study</h5>
+                  <h3 className="text-white h5">3. Show Up & Study</h3>
                   <p className="text-muted small">Manage your reservations from your dashboard. Cancel or modify anytime before your slot.</p>
                 </Card.Body>
               </Card>

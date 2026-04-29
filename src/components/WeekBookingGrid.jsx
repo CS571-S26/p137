@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Form, Row, Col } from 'react-bootstrap';
 import { getBookingsForRoomInRange } from '../data/bookings';
-import { minutesToLabel } from './TimeRangeSlider';
+import { minutesToLabel } from '../utils/time';
 
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const SLOT_MINUTES = 30;
@@ -202,8 +202,106 @@ export default function WeekBookingGrid({
     return `${formatMonthDay(weekStart)} \u2013 ${formatMonthDay(weekEnd)}, ${weekEnd.getFullYear()}`;
   };
 
+  const todayStr = todayIso;
+
+  const handleManualDate = (newDate) => {
+    if (!newDate) {
+      onChange('', null, null);
+      return;
+    }
+    const s = startTime ?? 9 * 60;
+    const e = endTime ?? 10 * 60;
+    onChange(newDate, s, e);
+    const newWeekStart = startOfWeek(new Date(newDate + 'T00:00:00'));
+    const diff = Math.round((newWeekStart - currentWeekStart) / (7 * 24 * 3600 * 1000));
+    setWeekOffset(Math.max(0, diff));
+  };
+
+  const handleManualStart = (val) => {
+    const s = parseInt(val, 10);
+    if (Number.isNaN(s)) return;
+    let e = endTime ?? s + 60;
+    if (e <= s) e = s + 30;
+    if (e - s > MAX_DURATION) e = s + MAX_DURATION;
+    if (e > END_MIN) e = END_MIN;
+    onChange(selectedDate || todayStr, s, e);
+  };
+
+  const handleManualEnd = (val) => {
+    const e = parseInt(val, 10);
+    if (Number.isNaN(e)) return;
+    const s = startTime ?? e - 60;
+    if (e <= s) return;
+    if (e - s > MAX_DURATION) return;
+    onChange(selectedDate || todayStr, s, e);
+  };
+
+  const startOptions = slots.map(m => ({ value: m, label: minutesToLabel(m) }));
+  const endOptions = [];
+  for (let m = START_MIN + SLOT_MINUTES; m <= END_MIN; m += SLOT_MINUTES) {
+    endOptions.push({ value: m, label: minutesToLabel(m) });
+  }
+
   return (
     <div className="week-booking-grid">
+      <fieldset className="mb-3 manual-time-entry">
+        <legend className="visually-hidden">Manual date and time entry</legend>
+        <Row className="g-2 align-items-end">
+          <Col sm={5}>
+            <Form.Group controlId="wbg-date">
+              <Form.Label className="small mb-1">Date</Form.Label>
+              <Form.Control
+                type="date"
+                size="sm"
+                min={todayStr}
+                value={selectedDate || ''}
+                onChange={(e) => handleManualDate(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+          <Col xs={6} sm={3}>
+            <Form.Group controlId="wbg-start">
+              <Form.Label className="small mb-1">Start</Form.Label>
+              <Form.Select
+                size="sm"
+                value={startTime ?? ''}
+                onChange={(e) => handleManualStart(e.target.value)}
+                disabled={!selectedDate}
+              >
+                <option value="">Select...</option>
+                {startOptions.map(o => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col xs={6} sm={3}>
+            <Form.Group controlId="wbg-end">
+              <Form.Label className="small mb-1">End</Form.Label>
+              <Form.Select
+                size="sm"
+                value={endTime ?? ''}
+                onChange={(e) => handleManualEnd(e.target.value)}
+                disabled={!selectedDate || startTime == null}
+              >
+                <option value="">Select...</option>
+                {endOptions
+                  .filter(o => startTime == null || (o.value > startTime && o.value - startTime <= MAX_DURATION))
+                  .map(o => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col sm={1} className="d-none d-sm-block">
+            <small className="text-muted">or drag</small>
+          </Col>
+        </Row>
+        <small className="text-muted d-block mt-1">
+          Use the form above for keyboard entry, or drag on the grid below.
+        </small>
+      </fieldset>
+
       <div className="d-flex justify-content-between align-items-center mb-2">
         <Button
           variant="outline-secondary"

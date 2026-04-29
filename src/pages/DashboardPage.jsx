@@ -55,7 +55,7 @@ export default function DashboardPage() {
 
   return (
     <Container className="py-4">
-      <h2 className="mb-4 text-white">My Dashboard</h2>
+      <h1 className="mb-4 text-white h2">My Dashboard</h1>
 
       <Row className="g-4 mb-4">
         <Col md={4}>

@@ -53,7 +53,7 @@ export default function RoomPage() {
   if (!room || !location) {
     return (
       <Container className="py-5 text-center">
-        <h3>Room not found</h3>
+        <h1>Room not found</h1>
         <Link to="/browse">Back to Browse</Link>
       </Container>
     );
@@ -78,7 +78,7 @@ export default function RoomPage() {
           <div className="d-flex justify-content-between align-items-start mb-2">
             <div>
               <Badge bg={typeColor[room.type] || 'secondary'} className="mb-2">{room.type}</Badge>
-              <h2 className="mb-1 text-white">{room.name}</h2>
+              <h1 className="mb-1 text-white h2">{room.name}</h1>
             </div>
             <FavoriteButton isFavorite={favorites.includes(id)} onToggle={toggleFavorite} size="md" />
           </div>
@@ -110,7 +110,7 @@ export default function RoomPage() {
 
       <Row className="mb-4">
         <Col md={6}>
-          <h5 className="text-white">Amenities</h5>
+          <h2 className="text-white h5">Amenities</h2>
           <div className="d-flex flex-wrap gap-2 mb-3">
             {room.amenities.map(a => (
               <span key={a} className="badge badge-dark-subtle px-3 py-2">
@@ -120,7 +120,7 @@ export default function RoomPage() {
           </div>
         </Col>
         <Col md={6}>
-          <h5 className="text-white">Available Equipment</h5>
+          <h2 className="text-white h5">Available Equipment</h2>
           {equipment.length === 0 ? (
             <p className="text-muted small">No reservable equipment for this room.</p>
           ) : (
@@ -134,7 +134,7 @@ export default function RoomPage() {
       <Row className="mb-4">
         <Col>
           <div className="d-flex justify-content-between align-items-center mb-2">
-            <h5 className="text-white mb-0">Availability</h5>
+            <h2 className="text-white mb-0 h5">Availability</h2>
             <Link to={`/book/${room.id}`} className="btn btn-primary btn-sm">
               Reserve a Time Slot
             </Link>

@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Breadcrumb } from 'react-bootstrap';
 import { useState } from 'react';
 import { getRoomById, getLocationById } from '../data/campusData';
 import BookingForm from '../components/BookingForm';
-import { minutesToLabel } from '../components/TimeRangeSlider';
+import { minutesToLabel } from '../utils/time';
 
 export default function BookingPage() {
   const { id } = useParams();
@@ -14,7 +14,7 @@ export default function BookingPage() {
   if (!room || !location) {
     return (
       <Container className="py-5 text-center">
-        <h3>Room not found</h3>
+        <h1>Room not found</h1>
         <Link to="/browse">Back to Browse</Link>
       </Container>
     );
@@ -78,7 +78,7 @@ export default function BookingPage() {
           <Card className="shadow-sm mb-3 sticky-top" style={{ top: '80px' }}>
             <Card.Img variant="top" src={room.image} alt={room.name} style={{ height: '180px', objectFit: 'cover' }} />
             <Card.Body>
-              <h5 className="mb-1">{room.name}</h5>
+              <div className="mb-1 h5 text-white fw-semibold">{room.name}</div>
               <p className="text-muted small mb-2">{location.name} &bull; Floor {room.floor}</p>
               <div className="d-flex gap-2 mb-2">
                 <span className="badge badge-dark-subtle"><i className="bi bi-people me-1" />{room.capacity}</span>
@@ -91,7 +91,7 @@ export default function BookingPage() {
         <Col md={8}>
           <Card className="shadow-sm">
             <Card.Body>
-              <h4 className="mb-3 text-white">Reserve {room.name}</h4>
+              <h1 className="mb-3 text-white h4">Reserve {room.name}</h1>
               <BookingForm room={room} onSubmit={handleSubmit} />
             </Card.Body>
           </Card>

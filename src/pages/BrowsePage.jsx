@@ -82,7 +82,7 @@ export default function BrowsePage() {
   return (
     <Container className="py-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2 className="text-white">Browse Campus Resources</h2>
+        <h1 className="text-white h2 mb-0">Browse Campus Resources</h1>
         {compareList.length > 0 && (
           <Link to={`/compare?rooms=${compareList.join(',')}`} className="btn btn-outline-primary">
             Compare ({compareList.length}) &rarr;

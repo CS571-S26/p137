@@ -34,9 +34,9 @@ export default function ReviewForm({ roomId, onSubmit, onCancel }) {
   return (
     <Card className="mb-3 review-form-dark">
       <Card.Body>
-        <h6 className="mb-3 text-white">Share your experience</h6>
+        <h3 className="mb-3 text-white h6">Share your experience</h3>
         <Form onSubmit={handleSubmit} noValidate>
-          <Form.Group className="mb-2">
+          <Form.Group className="mb-2" controlId="review-author">
             <Form.Label className="small">Your Name</Form.Label>
             <Form.Control
               size="sm"
@@ -44,11 +44,12 @@ export default function ReviewForm({ roomId, onSubmit, onCancel }) {
               onChange={(e) => setAuthor(e.target.value)}
               placeholder="e.g., Alex M."
               isInvalid={touched && !author.trim()}
+              autoComplete="name"
             />
           </Form.Group>
-          <Form.Group className="mb-2">
-            <Form.Label className="small">Rating</Form.Label>
-            <div>
+          <Form.Group className="mb-2" controlId="review-rating">
+            <Form.Label className="small" id="review-rating-label">Rating</Form.Label>
+            <div role="group" aria-labelledby="review-rating-label">
               <StarRating rating={rating} size="lg" interactive onRate={setRating} />
               {rating === 0 && <small className="text-muted ms-2">Click a star to rate</small>}
               {touched && rating === 0 && (
@@ -56,7 +57,7 @@ export default function ReviewForm({ roomId, onSubmit, onCancel }) {
               )}
             </div>
           </Form.Group>
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-3" controlId="review-text">
             <Form.Label className="small">Your Review</Form.Label>
             <Form.Control
               as="textarea"

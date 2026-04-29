@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Form, Button, Row, Col, ProgressBar, Alert } from 'react-bootstrap';
-import { minutesToLabel } from './TimeRangeSlider';
+import { minutesToLabel } from '../utils/time';
 import WeekBookingGrid from './WeekBookingGrid';
 import { useUser } from '../contexts/UserContext';
 import { findConflict } from '../data/bookings';
@@ -101,7 +101,7 @@ export default function BookingForm({ room, onSubmit }) {
 
       {step === 0 && (
         <div>
-          <h5 className="mb-3 text-white">Select Date & Time</h5>
+          <h2 className="mb-3 text-white h5">Select Date & Time</h2>
           <p className="text-muted small mb-3">
             Drag across green cells to pick your booking window. Red is already booked; gray is past.
           </p>
@@ -125,10 +125,10 @@ export default function BookingForm({ room, onSubmit }) {
 
       {step === 1 && (
         <div>
-          <h5 className="mb-3 text-white">Your Information</h5>
+          <h2 className="mb-3 text-white h5">Your Information</h2>
           <Row className="g-3">
             <Col md={6}>
-              <Form.Group>
+              <Form.Group controlId="booking-name">
                 <Form.Label>Full Name</Form.Label>
                 <Form.Control
                   type="text"
@@ -136,12 +136,13 @@ export default function BookingForm({ room, onSubmit }) {
                   onChange={(e) => update('name', e.target.value)}
                   isInvalid={!!errors.name}
                   placeholder="Enter your name"
+                  autoComplete="name"
                 />
                 <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
               </Form.Group>
             </Col>
             <Col md={6}>
-              <Form.Group>
+              <Form.Group controlId="booking-email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
                   type="email"
@@ -149,12 +150,13 @@ export default function BookingForm({ room, onSubmit }) {
                   onChange={(e) => update('email', e.target.value)}
                   isInvalid={!!errors.email}
                   placeholder="you@wisc.edu"
+                  autoComplete="email"
                 />
                 <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
               </Form.Group>
             </Col>
             <Col md={6}>
-              <Form.Group>
+              <Form.Group controlId="booking-group-size">
                 <Form.Label>Group Size</Form.Label>
                 <Form.Control
                   type="number"
@@ -168,7 +170,7 @@ export default function BookingForm({ room, onSubmit }) {
               </Form.Group>
             </Col>
             <Col md={6}>
-              <Form.Group>
+              <Form.Group controlId="booking-purpose">
                 <Form.Label>Purpose</Form.Label>
                 <Form.Select value={formData.purpose} onChange={(e) => update('purpose', e.target.value)}>
                   <option value="">Select purpose...</option>
@@ -181,7 +183,7 @@ export default function BookingForm({ room, onSubmit }) {
               </Form.Group>
             </Col>
             <Col xs={12}>
-              <Form.Group>
+              <Form.Group controlId="booking-notes">
                 <Form.Label>Notes (Optional)</Form.Label>
                 <Form.Control
                   as="textarea"
@@ -198,7 +200,7 @@ export default function BookingForm({ room, onSubmit }) {
 
       {step === 2 && (
         <div>
-          <h5 className="mb-3 text-white">Confirm Your Reservation</h5>
+          <h2 className="mb-3 text-white h5">Confirm Your Reservation</h2>
           {conflict && (
             <Alert variant="danger" className="py-2">
               A new conflicting booking was detected. Please go back and choose a different time.

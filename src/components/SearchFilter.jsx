@@ -36,17 +36,24 @@ export default function SearchFilter({ filters, onChange, locations, equipmentLi
       <Row className="g-2 align-items-end">
         <Col md={5}>
           <InputGroup>
-            <InputGroup.Text><i className="bi bi-search" /></InputGroup.Text>
+            <InputGroup.Text id="search-icon" aria-hidden="true">
+              <i className="bi bi-search" />
+            </InputGroup.Text>
             <Form.Control
-              type="text"
+              type="search"
               placeholder="Search rooms or buildings..."
+              aria-label="Search rooms or buildings"
               value={filters.search}
               onChange={(e) => update('search', e.target.value)}
             />
           </InputGroup>
         </Col>
         <Col md={3}>
-          <Form.Select value={filters.location} onChange={(e) => update('location', e.target.value)}>
+          <Form.Select
+            value={filters.location}
+            onChange={(e) => update('location', e.target.value)}
+            aria-label="Filter by location"
+          >
             <option value="">All Locations</option>
             {locations.map(loc => (
               <option key={loc.id} value={loc.id}>{loc.name}</option>
@@ -54,7 +61,11 @@ export default function SearchFilter({ filters, onChange, locations, equipmentLi
           </Form.Select>
         </Col>
         <Col md={2}>
-          <Form.Select value={filters.roomType} onChange={(e) => update('roomType', e.target.value)}>
+          <Form.Select
+            value={filters.roomType}
+            onChange={(e) => update('roomType', e.target.value)}
+            aria-label="Filter by room type"
+          >
             <option value="">All Types</option>
             {roomTypes.map(type => (
               <option key={type} value={type}>{type}</option>
@@ -82,31 +93,35 @@ export default function SearchFilter({ filters, onChange, locations, equipmentLi
         <div className="mt-3">
           <Row className="g-2 align-items-end">
             <Col md={3}>
-              <Form.Label className="small text-muted mb-1">Min Capacity</Form.Label>
-              <Form.Select value={filters.minCapacity} onChange={(e) => update('minCapacity', e.target.value)}>
-                <option value="">Any</option>
-                <option value="2">2+</option>
-                <option value="4">4+</option>
-                <option value="6">6+</option>
-                <option value="8">8+</option>
-                <option value="10">10+</option>
-                <option value="15">15+</option>
-              </Form.Select>
+              <Form.Group controlId="filter-min-capacity">
+                <Form.Label className="small text-muted mb-1">Min Capacity</Form.Label>
+                <Form.Select value={filters.minCapacity} onChange={(e) => update('minCapacity', e.target.value)}>
+                  <option value="">Any</option>
+                  <option value="2">2+</option>
+                  <option value="4">4+</option>
+                  <option value="6">6+</option>
+                  <option value="8">8+</option>
+                  <option value="10">10+</option>
+                  <option value="15">15+</option>
+                </Form.Select>
+              </Form.Group>
             </Col>
             <Col md={3}>
-              <Form.Label className="small text-muted mb-1">Available At</Form.Label>
-              <Form.Select value={filters.timeSlot} onChange={(e) => update('timeSlot', e.target.value)}>
-                <option value="">Any Time</option>
-                {['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
-                  '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM',
-                  '6:00 PM', '7:00 PM', '8:00 PM', '9:00 PM'].map(slot => (
-                    <option key={slot} value={slot}>{slot}</option>
-                  ))}
-              </Form.Select>
+              <Form.Group controlId="filter-time-slot">
+                <Form.Label className="small text-muted mb-1">Available At</Form.Label>
+                <Form.Select value={filters.timeSlot} onChange={(e) => update('timeSlot', e.target.value)}>
+                  <option value="">Any Time</option>
+                  {['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
+                    '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM',
+                    '6:00 PM', '7:00 PM', '8:00 PM', '9:00 PM'].map(slot => (
+                      <option key={slot} value={slot}>{slot}</option>
+                    ))}
+                </Form.Select>
+              </Form.Group>
             </Col>
             <Col md={6}>
-              <Form.Label className="small text-muted mb-1">Equipment</Form.Label>
-              <div>
+              <div className="small text-muted mb-1" id="filter-equipment-label">Equipment</div>
+              <div role="group" aria-labelledby="filter-equipment-label">
                 {equipmentList.map(eq => (
                   <EquipmentBadge
                     key={eq.id}

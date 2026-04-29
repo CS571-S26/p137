@@ -61,7 +61,7 @@ export default function ProfilePage() {
 
   return (
     <Container className="py-4">
-      <h2 className="mb-4 text-white">My Profile</h2>
+      <h1 className="mb-4 text-white h2">My Profile</h1>
 
       <Row className="g-4">
         <Col lg={4}>
@@ -80,7 +80,7 @@ export default function ProfilePage() {
               >
                 {profile.name ? profile.name.trim().charAt(0).toUpperCase() : '?'}
               </div>
-              <h5 className="text-white mb-1">{profile.name || 'Guest User'}</h5>
+              <h2 className="text-white mb-1 h5">{profile.name || 'Guest User'}</h2>
               <small className="text-muted d-block mb-2">{profile.email || 'Not signed in'}</small>
               {isSignedIn ? (
                 <Badge bg="success">Signed in</Badge>
@@ -97,7 +97,7 @@ export default function ProfilePage() {
 
           <Card className="shadow-sm">
             <Card.Body>
-              <h6 className="text-white mb-3">Activity</h6>
+              <h2 className="text-white mb-3 h6">Activity</h2>
               <Row className="g-2 text-center">
                 <Col xs={6}>
                   <div className="stat-number" style={{ fontSize: '1.6rem' }}>{stats.upcoming}</div>
@@ -127,7 +127,7 @@ export default function ProfilePage() {
           <Card className="shadow-sm">
             <Card.Body>
               <div className="d-flex justify-content-between align-items-center mb-3">
-                <h5 className="mb-0 text-white">Profile Details</h5>
+                <h2 className="mb-0 text-white h5">Profile Details</h2>
                 {isSignedIn && (
                   <Button variant="outline-danger" size="sm" onClick={handleSignOut}>
                     Sign Out
@@ -145,19 +145,20 @@ export default function ProfilePage() {
               <Form onSubmit={handleSave}>
                 <Row className="g-3">
                   <Col md={6}>
-                    <Form.Group>
+                    <Form.Group controlId="profile-name">
                       <Form.Label>Full Name</Form.Label>
                       <Form.Control
                         value={draft.name}
                         onChange={(e) => set('name', e.target.value)}
                         isInvalid={!!errors.name}
                         placeholder="e.g., Bucky Badger"
+                        autoComplete="name"
                       />
                       <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group>
+                    <Form.Group controlId="profile-email">
                       <Form.Label>Email</Form.Label>
                       <Form.Control
                         type="email"
@@ -165,12 +166,13 @@ export default function ProfilePage() {
                         onChange={(e) => set('email', e.target.value)}
                         isInvalid={!!errors.email}
                         placeholder="you@wisc.edu"
+                        autoComplete="email"
                       />
                       <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group>
+                    <Form.Group controlId="profile-major">
                       <Form.Label>Major</Form.Label>
                       <Form.Control
                         value={draft.major}
@@ -180,7 +182,7 @@ export default function ProfilePage() {
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group>
+                    <Form.Group controlId="profile-year">
                       <Form.Label>Year</Form.Label>
                       <Form.Select
                         value={draft.year}

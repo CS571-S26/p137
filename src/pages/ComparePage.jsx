@@ -42,7 +42,7 @@ export default function ComparePage() {
         <Breadcrumb.Item active>Compare</Breadcrumb.Item>
       </Breadcrumb>
 
-      <h2 className="mb-4 text-white">Compare Rooms</h2>
+      <h1 className="mb-4 text-white h2">Compare Rooms</h1>
 
       {rooms.length === 0 ? (
         <Alert variant="info" className="text-center py-4">

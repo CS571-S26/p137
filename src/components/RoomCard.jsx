@@ -34,6 +34,7 @@ export default function RoomCard({ room, equipment = [], isFavorite, onToggleFav
               onChange={() => onSelect?.(room.id)}
               className="form-check-input"
               onClick={(e) => e.stopPropagation()}
+              aria-label={`Select ${room.name} for comparison`}
             />
           )}
         </div>

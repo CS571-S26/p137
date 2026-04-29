@@ -25,7 +25,7 @@ export default function LocationPage() {
   if (!location) {
     return (
       <Container className="py-5 text-center">
-        <h3>Location not found</h3>
+        <h1>Location not found</h1>
         <Link to="/browse">Back to Browse</Link>
       </Container>
     );
@@ -56,13 +56,13 @@ export default function LocationPage() {
         </Col>
         <Col md={4}>
           <div className="dark-info-box">
-            <h6 className="text-white">Hours</h6>
+            <h2 className="text-white h6">Hours</h2>
             <small className="text-muted">{location.hours}</small>
           </div>
         </Col>
       </Row>
 
-      <h3 className="mb-3 text-white">Rooms in {location.name} ({rooms.length})</h3>
+      <h2 className="mb-3 text-white h3">Rooms in {location.name} ({rooms.length})</h2>
       <Row className="g-3">
         {rooms.map(room => (
           <Col lg={4} md={6} key={room.id}>

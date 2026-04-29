@@ -35,7 +35,7 @@ export default function ReviewSection({ reviews, roomId, onAddReview }) {
   return (
     <div className="review-section">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h5 className="mb-0 text-white">Reviews ({reviews.length})</h5>
+        <h2 className="mb-0 text-white h5">Reviews ({reviews.length})</h2>
         <Button
           variant={showForm ? 'outline-secondary' : 'outline-primary'}
           size="sm"

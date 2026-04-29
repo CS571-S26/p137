@@ -27,7 +27,7 @@ export default function ReservationCard({ reservation, onCancel, onReschedule })
       <Card.Body>
         <div className="d-flex justify-content-between align-items-start">
           <div>
-            <h6 className="mb-1 text-white">{reservation.roomName}</h6>
+            <h2 className="mb-1 text-white h6">{reservation.roomName}</h2>
             <small className="text-muted d-block">{reservation.locationName}</small>
           </div>
           <Badge bg={statusColors[reservation.status] || 'secondary'}>

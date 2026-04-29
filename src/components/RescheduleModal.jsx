@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Modal, Button, Alert } from 'react-bootstrap';
 import WeekBookingGrid from './WeekBookingGrid';
-import { minutesToLabel } from './TimeRangeSlider';
+import { minutesToLabel } from '../utils/time';
 import { findConflict } from '../data/bookings';
 
 export default function RescheduleModal({ show, reservation, onClose, onConfirm }) {
